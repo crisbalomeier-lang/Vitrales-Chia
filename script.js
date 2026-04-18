@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const imagenesGaleria = document.querySelectorAll('.foto-miniatura img, .card-galeria img');
 
     imagenesGaleria.forEach(imagen => {
-        // Evitar que el botón de "Ver Galería Completa" abra el visor si no es necesario
+        // Evitar que el botón "Ver Galería Completa" abra el visor
         if (!imagen.closest('#btn-ir-fotos')) {
             imagen.addEventListener('click', () => {
                 imgAmpliada.src = imagen.src; 
                 lightbox.style.display = 'flex'; 
-                document.body.style.overflow = 'hidden'; // Bloquea el scroll del fondo
+                document.body.style.overflow = 'hidden';
             });
         }
     });
@@ -20,36 +20,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Función para cerrar el visor
     const cerrarVisor = () => {
         lightbox.style.display = 'none';
-        imgAmpliada.src = ""; // Limpia la imagen para la próxima apertura
-        document.body.style.overflow = 'auto'; // Devuelve el scroll
+        imgAmpliada.src = "";
+        document.body.style.overflow = 'auto';
     };
 
-    // Eventos para cerrar
     btnCerrar.addEventListener('click', cerrarVisor);
     
-    // Cerrar al hacer clic en el fondo negro (fuera de la imagen)
     lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-            cerrarVisor();
-        }
+        if (e.target === lightbox) cerrarVisor();
     });
 
-    // Cerrar con la tecla Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === "Escape") cerrarVisor();
     });
 
-    // --- Lógica de navegación SPA (Manteniendo tu funcionalidad original) ---
+    // --- Lógica de navegación SPA ---
     const secciones = document.querySelectorAll('.seccion-spa');
     const enlacesNav = document.querySelectorAll('.nav-link');
     const btnIrFotos = document.getElementById('btn-ir-fotos');
 
-    function cambiarVista(targetId) {
+    // ✅ CORRECCIÓN: Títulos de página actualizados al cambiar de vista
+    const titulos = {
+        'vista-inicio': 'Vitrales Chía | Arte y Diseño en Vidrio',
+        'vista-nuestros-trabajos': 'Galería de Trabajos | Vitrales Chía',
+        'vista-fotos-detallada': 'Fotos Detalladas | Vitrales Chía'
+    };
+
+    function cambiarVista(targetId, scrollTargetId = null) {
         secciones.forEach(s => s.style.display = 'none');
         const objetivo = document.getElementById(targetId);
         if (objetivo) {
             objetivo.style.display = 'block';
-            window.scrollTo(0, 0);
+            // ✅ CORRECCIÓN: Actualiza el título del navegador
+            if (titulos[targetId]) document.title = titulos[targetId];
+
+            if (scrollTargetId) {
+                // ✅ CORRECCIÓN: Scroll al elemento de contacto después de mostrar la vista
+                setTimeout(() => {
+                    const scrollEl = document.getElementById(scrollTargetId);
+                    if (scrollEl) scrollEl.scrollIntoView({ behavior: 'smooth' });
+                }, 50);
+            } else {
+                window.scrollTo(0, 0);
+            }
         }
     }
 
@@ -58,7 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const target = enlace.getAttribute('data-target');
             if (target) {
                 e.preventDefault();
-                cambiarVista(target);
+                // ✅ CORRECCIÓN: Soporte para data-scroll (enlace de Contacto)
+                const scrollTarget = enlace.getAttribute('data-scroll');
+                cambiarVista(target, scrollTarget);
             }
         });
     });
