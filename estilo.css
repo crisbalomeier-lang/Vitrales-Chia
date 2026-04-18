@@ -345,94 +345,197 @@ nav a[data-scroll] {
 }
 
 /* ==========================================================================
-   6. RESPONSIVE PROFESIONAL OPTIMIZADO
+   6. RESPONSIVE — SOLO MÓVIL (≤ 768px)
+      Objetivo: verse lo más parecido posible a la versión de escritorio.
+      El diseño de PC no se toca en absoluto.
    ========================================================================== */
 
 @media (max-width: 768px) {
-    /* Contenedor principal con márgenes más limpios */
-    .contenedor { 
-        margin: 20px 10px; 
-        padding: 15px; 
-        border-radius: 15px;
-    }
-    
-    /* Botón de WhatsApp más accesible para el pulgar */
-    .whatsapp-flotante-superior { 
-        top: auto; 
-        bottom: 25px; 
-        right: 20px; 
-        padding: 12px 20px; 
-        font-size: 14px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+
+    /* ------------------------------------------------------------------
+       BODY Y CONTENEDOR
+    ------------------------------------------------------------------ */
+    body {
+        padding: 6px;
+        background-attachment: scroll; /* fix bug Safari iOS con fixed */
     }
 
-    /* Título que no se corta en pantallas pequeñas */
-    .titulo-llamativo { 
-        font-size: clamp(24px, 8vw, 32px); 
+    .contenedor {
+        margin: 8px 4px 100px 4px; /* margen inferior para que WA no tape nada */
+        padding: 20px 16px;
+        border-radius: 18px;
+    }
+
+    header {
+        margin-bottom: 20px;
+    }
+
+    /* ------------------------------------------------------------------
+       TÍTULO PRINCIPAL
+       En PC es 64px. En móvil usamos clamp para que escale con la pantalla
+       pero mantenga la misma presencia visual proporcional.
+    ------------------------------------------------------------------ */
+    .titulo-llamativo {
+        font-size: clamp(32px, 10vw, 46px);
+        line-height: 1.1;
+        letter-spacing: -0.5px;
+    }
+
+    /* ------------------------------------------------------------------
+       MENÚ DE NAVEGACIÓN
+       PROBLEMA VISIBLE: los 3 enlaces no caben en una fila → se parten.
+       SOLUCIÓN: una sola fila flex con fuente reducida y sin word-break,
+       igual de limpio que en PC pero adaptado al ancho del celular.
+    ------------------------------------------------------------------ */
+    nav {
+        display: flex;
+        flex-direction: row;         /* misma orientación que en PC */
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        padding: 12px 0;
+        margin-top: 16px;
+        flex-wrap: nowrap;           /* forzar una sola línea */
+    }
+
+    nav a {
+        margin: 0 8px;
+        padding: 8px 2px;
+        font-size: 10.5px;           /* reducido para que quepan en 1 línea */
+        letter-spacing: 0.4px;
+        white-space: nowrap;         /* evita que "GALERÍA DE TRABAJOS" se parta */
+        color: #555;
+        font-weight: 600;
+        text-transform: uppercase;
         text-align: center;
-        line-height: 1.2;
+        background: none;
+        border-radius: 0;
     }
 
-    /* Menú tipo "botones" más fáciles de tocar */
-    nav { 
-        display: grid;
+    /* ------------------------------------------------------------------
+       IMAGEN HERO (logo/tarjeta principal)
+       En PC: 500px fijo. En móvil: proporcional al ancho disponible.
+    ------------------------------------------------------------------ */
+    .contenedor-imagen-proporcional {
+        height: auto;
+        aspect-ratio: 4 / 3;        /* misma proporción visual que en PC */
+    }
+
+    /* ------------------------------------------------------------------
+       TÍTULO "VITRALES RELIGIOSOS Y ARTISTICOS"
+       PROBLEMA VISIBLE: se ve enorme en móvil y se corta.
+       SOLUCIÓN: reducir a escala proporcional con clamp.
+    ------------------------------------------------------------------ */
+    .titulo-blanco {
+        font-size: clamp(16px, 5vw, 22px);
+        line-height: 1.3;
+    }
+
+    .texto-blanco {
+        font-size: clamp(13px, 3.5vw, 15px);
+        margin-top: 6px;
+    }
+
+    .info-card {
+        padding: 18px 14px;
+    }
+
+    /* ------------------------------------------------------------------
+       BOTÓN WHATSAPP
+       PROBLEMA VISIBLE: tapa texto en el centro de la pantalla.
+       SOLUCIÓN: moverlo a la esquina inferior derecha, compacto.
+    ------------------------------------------------------------------ */
+    .whatsapp-flotante-superior {
+        top: auto;
+        bottom: 18px;
+        right: 14px;
+        left: auto;
+        padding: 10px 16px;
+        font-size: 13px;
+        border-radius: 50px;
+        gap: 8px;
+    }
+
+    /* ------------------------------------------------------------------
+       GALERÍA — TARJETA "VER GALERÍA COMPLETA"
+    ------------------------------------------------------------------ */
+    .card-galeria img {
+        height: 210px;
+        object-fit: cover;
+    }
+
+    .fila {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .pie-galeria h3 {
+        font-size: 19px;
+    }
+
+    /* ------------------------------------------------------------------
+       GALERÍA DETALLADA — MINIATURAS
+       2 columnas, altura uniforme, sin deformación
+    ------------------------------------------------------------------ */
+    .contenedor-fotos-pequenas {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
         padding: 10px 0;
     }
-    
-    nav a { 
-        margin: 0; 
-        padding: 12px 5px;
-        font-size: 13px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 8px;
-        text-align: center;
-    }
-
-    /* Ajuste de columnas para que el contenido no se vea apretado */
-    .fila { 
-        flex-direction: column; 
-        gap: 20px;
-    }
-    
-    /* Galería de fotos en 2 columnas */
-    .contenedor-galeria {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-
-    /* Imágenes con proporción fija para que no se deformen */
-    .contenedor-imagen-proporcional { 
-        height: auto;
-        aspect-ratio: 4 / 3; 
-        border-radius: 10px;
-    }
 
     .foto-miniatura img {
-        height: 150px;
+        height: 140px;
         object-fit: cover;
+        border-radius: 8px;
     }
 
-    /* Botón de cerrar el visor de fotos más grande */
-    .cerrar-lightbox {
-        top: 20px;
-        right: 20px;
-        font-size: 40px;
-        padding: 10px;
+    /* ------------------------------------------------------------------
+       TABLA DE SERVICIOS
+    ------------------------------------------------------------------ */
+    .titulo-seccion {
+        font-size: clamp(19px, 5.5vw, 24px);
+        margin: 22px 0 14px;
     }
 
-    /* ✅ CORRECCIÓN: Tabla de servicios legible en móvil */
-    .tabla-servicios th,
+    .tabla-servicios th {
+        font-size: 14px;
+        padding: 14px 10px;
+    }
+
     .tabla-servicios td {
-        padding: 12px;
         font-size: 13px;
+        padding: 12px 10px;
     }
 
-    /* ✅ CORRECCIÓN: Imagen hero adaptada en móvil */
-    .card-galeria img {
-        height: 220px;
+    /* ------------------------------------------------------------------
+       SECCIÓN CONTACTO
+    ------------------------------------------------------------------ */
+    .fila-contacto-centrada {
+        padding: 22px 14px;
     }
 
-} /* ✅ CORRECCIÓN: Llave de cierre del @media que faltaba en el archivo original */
+    .col-info p {
+        font-size: 14px;
+    }
+
+    /* ------------------------------------------------------------------
+       BOTONES DE VOLVER
+    ------------------------------------------------------------------ */
+    .btn-volver {
+        width: 100%;
+        padding: 13px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    /* ------------------------------------------------------------------
+       LIGHTBOX (VISOR DE FOTOS)
+    ------------------------------------------------------------------ */
+    .cerrar-lightbox {
+        top: 14px;
+        right: 14px;
+        font-size: 46px;
+        line-height: 1;
+    }
+
+} /* fin @media móvil */
